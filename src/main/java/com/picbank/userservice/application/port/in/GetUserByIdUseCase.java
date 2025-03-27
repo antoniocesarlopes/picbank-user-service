@@ -2,6 +2,8 @@ package com.picbank.userservice.application.port.in;
 
 import com.picbank.userservice.domain.model.User;
 
-public interface CreateUserUseCase {
-    void createUser(User user);
+import java.util.UUID;
+
+public interface GetUserByIdUseCase {
+    User getUserById(UUID id);
 }

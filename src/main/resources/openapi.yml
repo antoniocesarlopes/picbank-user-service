@@ -119,6 +119,84 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
 
+  /users/{id}/address:
+    get:
+      summary: Get address by user ID
+      operationId: getUserAddress
+      x-controller: UserController
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: User ID (UUID)
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Address found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddressResponse'
+        '404':
+          description: User not found or address not available
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '400':
+          description: Invalid UUID format
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /users/{id}/preferences:
+    get:
+      summary: Get preferences by user ID
+      operationId: getUserPreferences
+      x-controller: UserController
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: User ID (UUID)
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Preferences found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserPreferencesResponse'
+        '404':
+          description: User not found or preferences not available
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '400':
+          description: Invalid UUID format
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
 components:
   schemas:
     UserExistsResponse:
@@ -151,15 +229,15 @@ components:
         type:
           $ref: '#/components/schemas/UserType'
         address:
-          $ref: '#/components/schemas/Address'
+          $ref: '#/components/schemas/AddressResponse'
         preferences:
-          $ref: '#/components/schemas/UserPreferences'
+          $ref: '#/components/schemas/UserPreferencesResponse'
         createdAt:
           type: string
           format: date-time
           description: User creation timestamp
 
-    Address:
+    AddressResponse:
       type: object
       properties:
         street:
@@ -175,7 +253,7 @@ components:
           type: string
           description: Postal code
 
-    UserPreferences:
+    UserPreferencesResponse:
       type: object
       properties:
         language:

@@ -1,7 +1,7 @@
 package com.picbank.userservice.infrastructure.messaging;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.picbank.userservice.application.port.in.CreateUserUseCase;
+import com.picbank.userservice.application.port.in.CheckUserUseCase;
 import com.picbank.userservice.domain.model.User;
 import io.awspring.cloud.sqs.annotation.SqsListener;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class CreateUserSqsListener {
 
-    private final CreateUserUseCase createUserUseCase;
+    private final CheckUserUseCase createUserUseCase;
     private final ObjectMapper objectMapper;
 
     @SqsListener("${aws.sqs.queue-url}")
