@@ -1,7 +1,7 @@
 # Read Me First
 The following was discovered as part of building this project:
 
-* The original package name 'com.picbank.picbank-user-service' is invalid and this project uses 'com.picbank.picbank_user_service' instead.
+* The original package name 'com.picbank.picbank-user-service' is invalid and this project uses 'com.picbank.userservice' instead.
 
 # Getting Started
 

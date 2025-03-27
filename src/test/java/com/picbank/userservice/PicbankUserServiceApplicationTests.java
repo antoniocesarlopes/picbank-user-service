@@ -1,4 +1,4 @@
-package com.picbank.picbank_user_service;
+package com.picbank.userservice;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -1,0 +1,216 @@
+openapi: 3.0.3
+info:
+  title: User Service API
+  description: API for managing users in Pic-Bank
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8081/api
+
+paths:
+  /users/exists:
+    get:
+      summary: Check if a user exists by email
+      operationId: checkUserExists
+      x-controller: UserController
+      parameters:
+        - name: email
+          in: query
+          required: true
+          description: User email to check existence
+          schema:
+            type: string
+            format: email
+      responses:
+        '200':
+          description: User existence check response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserExistsResponse'
+        '400':
+          description: Invalid email format
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /users:
+    get:
+      summary: Get user details by email
+      operationId: getUserByEmail
+      x-controller: UserController
+      parameters:
+        - name: email
+          in: query
+          required: true
+          description: User email to retrieve full user details
+          schema:
+            type: string
+            format: email
+      responses:
+        '200':
+          description: User found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '400':
+          description: Invalid email format
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /users/{id}:
+    get:
+      summary: Get user details by ID
+      operationId: getUserById
+      x-controller: UserController
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: User ID (UUID)
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: User found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '400':
+          description: Invalid UUID format
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    UserExistsResponse:
+      type: object
+      properties:
+        exists:
+          type: boolean
+          description: Indicates whether the user exists or not
+
+    UserResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique user identifier
+        cognitoId:
+          type: string
+          description: AWS Cognito ID
+        email:
+          type: string
+          format: email
+          description: User email
+        document:
+          type: string
+          description: User document (CPF/CNPJ)
+        fullName:
+          type: string
+          description: Full name of the user
+        type:
+          $ref: '#/components/schemas/UserType'
+        address:
+          $ref: '#/components/schemas/Address'
+        preferences:
+          $ref: '#/components/schemas/UserPreferences'
+        createdAt:
+          type: string
+          format: date-time
+          description: User creation timestamp
+
+    Address:
+      type: object
+      properties:
+        street:
+          type: string
+          description: Street name
+        city:
+          type: string
+          description: City name
+        state:
+          type: string
+          description: State name
+        zipCode:
+          type: string
+          description: Postal code
+
+    UserPreferences:
+      type: object
+      properties:
+        language:
+          type: string
+          enum: [PORTUGUESE, ENGLISH, SPANISH]
+          description: User's preferred language
+        theme:
+          type: string
+          enum: [LIGHT, DARK]
+          description: User's preferred theme
+        fontSize:
+          type: string
+          enum: [SMALL, MEDIUM, LARGE]
+          description: User's preferred font size
+
+    UserType:
+      type: string
+      enum: [MERCHANT, STANDARD]
+      description: "Type of user"
+
+    ErrorResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+          description: HTTP status code
+        code:
+          type: string
+          description: Custom error code
+        message:
+          type: string
+          description: Error message
+        details:
+          type: array
+          items:
+            type: string
+          description: Additional error details

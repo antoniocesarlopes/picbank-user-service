@@ -1,4 +1,4 @@
-package com.picbank.picbank_user_service;
+package com.picbank.userservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
